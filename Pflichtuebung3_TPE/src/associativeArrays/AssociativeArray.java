@@ -6,7 +6,7 @@ package associativeArrays;
  *
  * @param <T>
  */
-public interface AssociativeArray<T> {
+public interface AssociativeArray<Key,T> {
 
 	/**
 	 * clear() leert das assoziative Array
@@ -25,14 +25,14 @@ public interface AssociativeArray<T> {
 	 * @param key
 	 * @return boolean
 	 */
-	public boolean containsKey(T key);
+	public boolean containsKey(Key key);
 	
 	/**
-	 * get(T key) gibt den Wert an der Stelle des übergebenen Schlüssels zurück
+	 * get(Key key) gibt den Wert an der Stelle des übergebenen Schlüssels zurück
 	 * @param key
-	 * @return T
+	 * @return boolean
 	 */
-	public T get(T key);
+	public T get(Key key);
 	
 	/**
 	 * isEmpty() prüft ob das Array leer ist
@@ -45,7 +45,7 @@ public interface AssociativeArray<T> {
 	 * @param key
 	 * @param value
 	 */
-	public void put(T key, T value);
+	public void put(Key key, T value);
 	
 	/**
 	 * putAll(T pairs[]) fügt alle Schlüssel-Wert Paare zum assiozativen Array hinzu
@@ -58,7 +58,7 @@ public interface AssociativeArray<T> {
 	 * @param key
 	 * @return T
 	 */
-	public T remove(T key);
+	public T remove(Key key);
 	
 	/**
 	 * size() gibt die Anzahl der Schlüssel-Wert Paare in einem assiozativem Array zurück
