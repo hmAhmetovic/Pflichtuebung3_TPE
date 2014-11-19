@@ -1,5 +1,8 @@
 package associativeArrays;
 
+import associativeArrays.AssociativeArray.Node;
+
+
 /**
  * Interface 'AssociativeArray' mit den Methoden zum Verwalten eines assiozativen Arrays
  * @author TPE Gruppe 14
@@ -8,6 +11,8 @@ package associativeArrays;
  */
 public interface AssociativeArray<Key,T> {
 
+	class Node<Key,T>{};
+	
 	/**
 	 * clear() leert das assoziative Array
 	 */
@@ -48,10 +53,10 @@ public interface AssociativeArray<Key,T> {
 	public void put(Key key, T value);
 	
 	/**
-	 * putAll(T pairs[]) fügt alle Schlüssel-Wert Paare zum assiozativen Array hinzu
+	 * putAll(Node<Key,Val) fügt alle Schlüssel-Wert Paare zum assiozativen Array hinzu
 	 * @param pairs
 	 */
-	public void putAll(T pairs[]);
+	public void putAll(Node<Key, T> tree);
 	
 	/**
 	 * remove(T key) entfert das Schlüssel-Wert Paar des übergebenen Schlüssels und gibt den Wert zurück
