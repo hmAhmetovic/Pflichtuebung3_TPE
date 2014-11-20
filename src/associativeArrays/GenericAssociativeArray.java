@@ -1,23 +1,22 @@
 package associativeArrays;
 
-import associativeArrays.AssociativeArray;
-import associativeArrays.GenericAssociativeArray.Node;
+
 
 public class GenericAssociativeArray<Key, Val> implements
 		AssociativeArray<Key, Val> {
 
 	/**
 	 * Klasse 'Node' zum erstellen von Knoten. Jeder Knoten hat einen Wert,
-	 * Schlüssel und zwei Kinder.
+	 * SchlÃ¼ssel und zwei Kinder.
 	 * 
 	 * @author TPE Gruppe 14
 	 *
 	 * @param <Key>
 	 * @param <Val>
 	 */
-	private class Node<Key, Val> {
+	private class Node<Key, Val> implements Comparable {
 
-		// Schlüssel
+		// Schlï¿½ssel
 		private Key key;
 		// Wert
 		private Val value;
@@ -25,6 +24,8 @@ public class GenericAssociativeArray<Key, Val> implements
 		private Node<Key, Val> left;
 		// rechtes Kind
 		private Node<Key, Val> right;
+		// Elternknoten
+		private Node<Key, Val> parent;
 
 		// Konstruktor
 		public Node(Key key, Val value) {
@@ -32,6 +33,7 @@ public class GenericAssociativeArray<Key, Val> implements
 			this.value = value;
 			this.left = null;
 			this.right = null;
+			this.parent = null;
 		}
 
 		/*
@@ -68,7 +70,63 @@ public class GenericAssociativeArray<Key, Val> implements
 		private void setRight(Node<Key, Val> right) {
 			this.right = right;
 		}
+		
+		private Node<Key,Val> getParent() {
+			return parent;
+		}
+		
+		private void setParent(Node<Key, Val> parent){
+			this.parent = parent;
+		}
 
+		
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((key == null) ? 0 : key.hashCode());
+			result = prime * result + ((value == null) ? 0 : value.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Node other = (Node) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (key == null) {
+				if (other.key != null)
+					return false;
+			} else if (!key.equals(other.key))
+				return false;
+			if (value == null) {
+				if (other.value != null)
+					return false;
+			} else if (!value.equals(other.value))
+				return false;
+			return true;
+		}
+		
+		
+
+		private GenericAssociativeArray getOuterType() { //???
+			return GenericAssociativeArray.this;
+		}
+
+		@Override
+		public int compareTo(Object other) {			
+			return this.key.hashCode() - ((Node) other).key.hashCode();
+		}
+		
+		
 	}
 
 	// Wurzel des Baums
@@ -81,7 +139,7 @@ public class GenericAssociativeArray<Key, Val> implements
 
 	@Override
 	public void clear() {
-		// Wurzel löschen, damit den gesamten Baum
+		// Wurzel lÃ¶schen, damit den gesamten Baum
 		this.root = null;
 
 	}
@@ -100,7 +158,7 @@ public class GenericAssociativeArray<Key, Val> implements
 
 	@Override
 	public Val get(Key key) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -119,38 +177,40 @@ public class GenericAssociativeArray<Key, Val> implements
 	public void put(Key key, Val value) {
 
 		Node<Key, Val> actualNode = this.root;
-		// erstelle Schlüssel-Wert-Paar mit übergebenem Schlüssel und Wert
+		// erstelle SchlÃ¼ssel-Wert-Paar mit Ã¼bergebenem SchlÃ¼ssel und Wert
 		Node<Key, Val> putNode = new Node<Key, Val>(key, value);
 		putNode(putNode, actualNode);
 	}
 
 	private void putNode(Node<Key, Val> putNode, Node<Key, Val> actualNode) {
 
-		// Wenn übergebener Schlüssel kleiner ist als Schlüssel vom aktuellen
+		// Wenn Ã¼bergebener SchlÃ¼ssel kleiner ist als SchlÃ¼ssel vom aktuellen
 		// Knoten suche links
 		if (actualNode.hashCode() > putNode.hashCode()) {
 			if (actualNode.getLeft() == null) {
-				// Wenn linker Knoten frei setze Schlüssel-Wert-Paar
+				// Wenn linker Knoten frei setze SchlÃ¼ssel-Wert-Paar
 				actualNode.setLeft(putNode);
+				putNode.setParent(actualNode);
 			} else {
-				// Prüfe linken Knoten (rekursiver Aufruf)
+				// PrÃ¼fe linken Knoten (rekursiver Aufruf)
 				putNode(putNode, actualNode.getLeft());
 			}
 
 			
-		// Wenn übergebener Schlüssel größer ist als Schlüssel vom aktuellen
+		// Wenn Ã¼bergebener SchlÃ¼ssel grÃ¶ÃŸer ist als SchlÃ¼ssel vom aktuellen
 		// Knoten suche rechts
 		} else if (actualNode.hashCode() < putNode.hashCode()) {
 			if (actualNode.getRight() == null) {
 				actualNode.setRight(putNode);
+				putNode.setParent(actualNode);
 			} else {
 				putNode(putNode, actualNode.getRight());
 			}
 		}
 
 		/*
-		 * Wenn Hashwert des übergebenen Schlüssels gleich mit einem Schlüsssel
-		 * im Baum ist soll das übergebene Schlüssel-Wert-Paar verworfen werden
+		 * Wenn Hashwert des Ã¼bergebenen SchlÃ¼ssels gleich mit einem SchlÃ¼sssel
+		 * im Baum ist soll das Ã¼bergebene SchlÃ¼ssel-Wert-Paar verworfen werden
 		 */
 
 	}
