@@ -162,21 +162,22 @@ public class GenericAssociativeArray<Key, Val> implements
 				|| containsValueRek(value, actualNode.right);
 
 	}
+	
+	@Override
+	public int size() {
 
-	public int size(Val value) {
-
-		return sizeRek(value, this.root);
+		return sizeRek( this.root);
 	}
 
-	private int sizeRek(Val value, Node<Key, Val> actualNode) {
+	private int sizeRek( Node<Key, Val> actualNode) {
 
 		// baum ist leer?
 		if (actualNode == null) {
 			return 0;
 		}
 
-		return 1 + sizeRek(value, actualNode.left)
-				+ sizeRek(value, actualNode.right);
+		return 1 + sizeRek( actualNode.left)
+				+ sizeRek( actualNode.right);
 
 	}
 
@@ -297,10 +298,9 @@ public class GenericAssociativeArray<Key, Val> implements
 				// Prüfe linken Knoten (rekursiver Aufruf)
 				putRek(putNode, actualNode.getLeft());
 			}
-
 			// Wenn übergebener Schlüssel größer ist als Schlüssel vom aktuellen
 			// Knoten suche rechts
-		} else if (actualNode.hashCode() < putNode.hashCode()) {
+			} else if (actualNode.hashCode() < putNode.hashCode()) {
 			if (actualNode.getRight() == null) {
 				actualNode.setRight(putNode);
 				putNode.setParent(actualNode);
@@ -322,11 +322,7 @@ public class GenericAssociativeArray<Key, Val> implements
 		return null;
 	}
 
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 
 	@Override
 	public void update(Val key, Val value) {
