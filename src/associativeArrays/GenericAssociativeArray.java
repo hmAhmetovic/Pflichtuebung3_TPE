@@ -1,7 +1,5 @@
 package associativeArrays;
 
-
-
 public class GenericAssociativeArray<Key, Val> implements
 		AssociativeArray<Key, Val> {
 
@@ -16,7 +14,7 @@ public class GenericAssociativeArray<Key, Val> implements
 	 */
 	private class Node<Key, Val> implements Comparable {
 
-		// Schl�ssel
+		// Schlüssel
 		private Key key;
 		// Wert
 		private Val value;
@@ -70,16 +68,14 @@ public class GenericAssociativeArray<Key, Val> implements
 		private void setRight(Node<Key, Val> right) {
 			this.right = right;
 		}
-		
-		private Node<Key,Val> getParent() {
+
+		private Node<Key, Val> getParent() {
 			return parent;
 		}
-		
-		private void setParent(Node<Key, Val> parent){
+
+		private void setParent(Node<Key, Val> parent) {
 			this.parent = parent;
 		}
-
-		
 
 		@Override
 		public int hashCode() {
@@ -114,19 +110,16 @@ public class GenericAssociativeArray<Key, Val> implements
 				return false;
 			return true;
 		}
-		
-		
 
-		private GenericAssociativeArray getOuterType() { //???
+		private GenericAssociativeArray getOuterType() { // ???
 			return GenericAssociativeArray.this;
 		}
 
 		@Override
-		public int compareTo(Object other) {			
+		public int compareTo(Object other) {
 			return this.key.hashCode() - ((Node) other).key.hashCode();
 		}
-		
-		
+
 	}
 
 	// Wurzel des Baums
@@ -146,20 +139,130 @@ public class GenericAssociativeArray<Key, Val> implements
 
 	@Override
 	public boolean containsValue(Val value) {
-		// TODO Auto-generated method stub
-		return false;
+		Node<Key, Val> actualNode = this.root;
+
+		return containsValueRek(value, actualNode);
+
+	}
+	//wrapper Methode  zum erweitern der Parameter
+	private boolean containsValueRek(Val value, Node<Key, Val> actualNode) {
+
+		// baum ist leer?
+		if (actualNode == null) {
+			return false;
+		}
+
+		// aktueller value ist gleich gesuchter value ?
+		if (actualNode.value == value) {
+			return true;
+		}
+
+		// geht den kommpletten baum durch
+		return containsValueRek(value, actualNode.left)
+				|| containsValueRek(value, actualNode.right);
+
+	}
+
+	public int size(Val value) {
+
+		return sizeRek(value, this.root);
+	}
+
+	private int sizeRek(Val value, Node<Key, Val> actualNode) {
+
+		// baum ist leer?
+		if (actualNode == null) {
+			return 0;
+		}
+
+		return 1 + sizeRek(value, actualNode.left)
+				+ sizeRek(value, actualNode.right);
+
 	}
 
 	@Override
 	public boolean containsKey(Key key) {
-		// TODO Auto-generated method stub
-		return false;
+		return containsKey(key, this.root);
+		
 	}
+	
+	
+	
+	private boolean containsKey(Key key, Node<Key, Val> actualNode) {
+
+		// baum ist leer?
+		if (actualNode == null) {
+			return false;
+		}
+
+		// aktueller key ist gleich gesuchter key ?
+		if (actualNode.key == key) {
+			return true;
+		}
+
+		// key ist größer
+		if (actualNode.key.hashCode() < key.hashCode()) {
+
+			// rechter Ast leer ?
+			if (actualNode.right == null) {
+				return false;
+				// geh in den rechten Ast
+			} else {
+				return containsKey(key, actualNode.right);
+			}
+
+			// key ist kleiner
+			// linker Ast leer
+		} else if (actualNode.left == null) {
+			return false;
+		} else {
+			// geh in den linken Ast
+			return containsKey(key, actualNode.left);
+		}
+
+	}
+	
+	
+	
 
 	@Override
 	public Val get(Key key) {
-		
-		return null;
+
+		return getRek(key, this.root);
+	}
+
+	private Val getRek(Key key, Node<Key, Val> actualNode) {
+
+		// baum ist leer?
+		if (this.isEmpty()) {
+			return null;
+		}
+
+		// aktueller key ist gleich gesuchter key ?
+		if (actualNode.key == key) {
+			return actualNode.value;
+		}
+
+		// key ist größer
+		if (actualNode.key.hashCode() < key.hashCode()) {
+
+			// rechter Ast leer ?
+			if (actualNode.right == null) {
+				return null;
+				// geh in den rechten Ast
+			} else {
+				return getRek(key, actualNode.right);
+			}
+
+			// key ist kleiner
+			// linker Ast leer
+		} else if (actualNode.left == null) {
+			return null;
+		} else {
+			// geh in den linken Ast
+			return getRek(key, actualNode.left);
+		}
+
 	}
 
 	@Override
@@ -176,13 +279,12 @@ public class GenericAssociativeArray<Key, Val> implements
 	@Override
 	public void put(Key key, Val value) {
 
-		Node<Key, Val> actualNode = this.root;
 		// erstelle Schlüssel-Wert-Paar mit übergebenem Schlüssel und Wert
 		Node<Key, Val> putNode = new Node<Key, Val>(key, value);
-		putNode(putNode, actualNode);
-	}
+		putRek(putNode, this.root);
+	} 
 
-	private void putNode(Node<Key, Val> putNode, Node<Key, Val> actualNode) {
+	private void putRek(Node<Key, Val> putNode, Node<Key, Val> actualNode) {
 
 		// Wenn übergebener Schlüssel kleiner ist als Schlüssel vom aktuellen
 		// Knoten suche links
@@ -193,18 +295,17 @@ public class GenericAssociativeArray<Key, Val> implements
 				putNode.setParent(actualNode);
 			} else {
 				// Prüfe linken Knoten (rekursiver Aufruf)
-				putNode(putNode, actualNode.getLeft());
+				putRek(putNode, actualNode.getLeft());
 			}
 
-			
-		// Wenn übergebener Schlüssel größer ist als Schlüssel vom aktuellen
-		// Knoten suche rechts
+			// Wenn übergebener Schlüssel größer ist als Schlüssel vom aktuellen
+			// Knoten suche rechts
 		} else if (actualNode.hashCode() < putNode.hashCode()) {
 			if (actualNode.getRight() == null) {
 				actualNode.setRight(putNode);
 				putNode.setParent(actualNode);
 			} else {
-				putNode(putNode, actualNode.getRight());
+				putRek(putNode, actualNode.getRight());
 			}
 		}
 
@@ -214,9 +315,6 @@ public class GenericAssociativeArray<Key, Val> implements
 		 */
 
 	}
-
-
-
 
 	@Override
 	public Val remove(Key key) {
@@ -245,11 +343,7 @@ public class GenericAssociativeArray<Key, Val> implements
 	@Override
 	public void putAll(associativeArrays.AssociativeArray.Node<Key, Val> tree) {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
-
-	
 
 }
