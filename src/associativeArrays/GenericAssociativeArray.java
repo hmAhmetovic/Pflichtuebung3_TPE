@@ -132,7 +132,7 @@ public class GenericAssociativeArray<Key, Val> implements
 
 	@Override
 	public void clear() {
-		// Wurzel löschen, damit den gesamten Baum
+		// Wurzel null setzen damit ist gesamter Baum leer
 		this.root = null;
 
 	}
@@ -144,87 +144,83 @@ public class GenericAssociativeArray<Key, Val> implements
 		return containsValueRek(value, actualNode);
 
 	}
-	//wrapper Methode  zum erweitern der Parameter
+
+	// wrapper Methode zum erweitern der Parameter
 	private boolean containsValueRek(Val value, Node<Key, Val> actualNode) {
 
-		// baum ist leer?
+		// Es gibt keine weiteren Kinderknoten
 		if (actualNode == null) {
 			return false;
 		}
 
-		// aktueller value ist gleich gesuchter value ?
+		// Wenn aktueller Knoten den gesuchten Wert enthält return true
 		if (actualNode.value == value) {
 			return true;
 		}
 
-		// geht den kommpletten baum durch
+		// sucht den gesamten Baum rekursiv ab (preorder)
 		return containsValueRek(value, actualNode.left)
 				|| containsValueRek(value, actualNode.right);
 
 	}
-	
+
 	@Override
 	public int size() {
-
-		return sizeRek( this.root);
+		return sizeRek(this.root);
 	}
 
-	private int sizeRek( Node<Key, Val> actualNode) {
+	private int sizeRek(Node<Key, Val> actualNode) {
 
-		// baum ist leer?
+		// Es gibt keine weiteren Kinderknoten
 		if (actualNode == null) {
 			return 0;
 		}
 
-		return 1 + sizeRek( actualNode.left)
-				+ sizeRek( actualNode.right);
+		// summiert alle Knoten im Baum mit Rekursion
+		return 1 + sizeRek(actualNode.left) + sizeRek(actualNode.right);
 
 	}
 
 	@Override
 	public boolean containsKey(Key key) {
 		return containsKey(key, this.root);
-		
+
 	}
-	
-	
-	
+
 	private boolean containsKey(Key key, Node<Key, Val> actualNode) {
 
-		// baum ist leer?
+		// Es gibt keine weiteren Kinderknoten
 		if (actualNode == null) {
 			return false;
 		}
 
-		// aktueller key ist gleich gesuchter key ?
+		// Wenn aktueller Knoten gesuchten Key enthält return true
 		if (actualNode.key == key) {
 			return true;
 		}
 
-		// key ist größer
+		// Wenn gesuchter Key größer ist als Key vom aktuellen Knoten
 		if (actualNode.key.hashCode() < key.hashCode()) {
 
-			// rechter Ast leer ?
+			// Wenn rechter Ast leer ist
 			if (actualNode.right == null) {
 				return false;
-				// geh in den rechten Ast
+				// suche weiter im rechten Ast
 			} else {
 				return containsKey(key, actualNode.right);
 			}
 
-			// key ist kleiner
-			// linker Ast leer
+			// Wenn gesuchter Key kleiner ist als Key vom aktuellen Knoten
+
+			// Wenn linker Ast leer ist
 		} else if (actualNode.left == null) {
 			return false;
+			// suche weiter im linken Ast
 		} else {
-			// geh in den linken Ast
 			return containsKey(key, actualNode.left);
 		}
 
 	}
-	
-	
-	
 
 	@Override
 	public Val get(Key key) {
@@ -234,17 +230,17 @@ public class GenericAssociativeArray<Key, Val> implements
 
 	private Val getRek(Key key, Node<Key, Val> actualNode) {
 
-		// baum ist leer?
+		// Wenn Baum leer ist return null
 		if (this.isEmpty()) {
 			return null;
 		}
 
-		// aktueller key ist gleich gesuchter key ?
+		// Wenn Key in einem Knoten gefunden wurde return Wert des Knoten
 		if (actualNode.key == key) {
 			return actualNode.value;
 		}
 
-		// key ist größer
+		// Wenn gesuchter Key größer ist als key vom aktuellen Knoten
 		if (actualNode.key.hashCode() < key.hashCode()) {
 
 			// rechter Ast leer ?
@@ -271,7 +267,7 @@ public class GenericAssociativeArray<Key, Val> implements
 		// Gibt es eine Wurzel ist der Baum nicht leer
 		if (root != null) {
 			return true;
-			// Falls es keine Wurzel gibt, gibt es auch keinen Baum
+			// ist die Wurzel null ist der Baum leer
 		} else {
 			return false;
 		}
@@ -283,7 +279,7 @@ public class GenericAssociativeArray<Key, Val> implements
 		// erstelle Schlüssel-Wert-Paar mit übergebenem Schlüssel und Wert
 		Node<Key, Val> putNode = new Node<Key, Val>(key, value);
 		putRek(putNode, this.root);
-	} 
+	}
 
 	private void putRek(Node<Key, Val> putNode, Node<Key, Val> actualNode) {
 
@@ -300,7 +296,7 @@ public class GenericAssociativeArray<Key, Val> implements
 			}
 			// Wenn übergebener Schlüssel größer ist als Schlüssel vom aktuellen
 			// Knoten suche rechts
-			} else if (actualNode.hashCode() < putNode.hashCode()) {
+		} else if (actualNode.hashCode() < putNode.hashCode()) {
 			if (actualNode.getRight() == null) {
 				actualNode.setRight(putNode);
 				putNode.setParent(actualNode);
@@ -318,11 +314,101 @@ public class GenericAssociativeArray<Key, Val> implements
 
 	@Override
 	public Val remove(Key key) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Val value;
+		// Wenn Wert im Baum vorhanden ist
+		if (containsKey(this.root.getKey()) == true) {
+			value = get(key);
+			if (this.root.getKey() == key) {
+				removeRoot(this.root);
+			} else {
+				removeNodeRek(this.root, key);
+			}
+			// Wert ist nicht vorhanden , null
+		} else {
+			value = null;
+		}
+		return value;
+	}
+	
+	
+	private void removeNodeRek(Node<Key, Val> actualNode, Key key) {
+
+		if (actualNode.getKey() == key) {
+			Node<Key, Val> setRight = actualNode.getRight();
+
+			// Löschen des Knoten durch Verbinden des Elternknotens mit dem
+			// Kindknoten des gelöschten Knoten
+			actualNode.getParent().setLeft(actualNode.getLeft());
+			actualNode.getParent().getLeft().setRight(setRight);
+
+		} else {
+			// Key ist größer als key vom aktuellen Knoten gehe rechts
+			if (actualNode.getKey().hashCode() < key.hashCode()) {
+				actualNode.getRight().setParent(actualNode);
+				removeNodeRek(actualNode.getRight(), key);
+				// Key ist kleiner als key vom aktuellen Knoten gehe links
+			} else {
+				actualNode.getLeft().setParent(actualNode);
+				removeNodeRek(actualNode.getLeft(), key);
+			}
+
+		}
 	}
 
+	/**
+	 * RemoveRoot() entfernt die Wurzel in einem binären Baum und fügt einen
+	 * neuen Baum zusammen
+	 * 
+	 * @param root
+	 */
+	private void removeRoot(Node<Key, Val> root) {
 
+		// Wenn Wurzel einziger Knoten ist leere Baum
+		if (size() <= 1) {
+			clear();
+
+			// Falls Teilbäume zusammengefügt werden müssen
+		} else {
+			// Wenn Teilbäume nicht leer füge Teilbäume zusammen
+			if (this.root.getRight() != null && this.root.getLeft() != null) {
+				assembleNewTree(this.root.getLeft(), this.root.getRight());
+
+				// Rechter Teilbaum ist leer, neuer Baum ist linker Teilbaum
+			} else if (this.root.getRight() == null
+					&& this.root.getLeft() != null) {
+				this.root = this.root.getLeft();
+
+				// Linker Teilbaum ist leer, neuer Baum ist rechter Teilbaum
+			} else {
+				this.root = this.root.getRight();
+			}
+		}
+	}
+
+	/**
+	 * assembleNewTree() fügt den linken Teilbaum an das am weitesten links
+	 * stehende Element im rechten Teilbaum an
+	 * 
+	 * @param leftSubTree
+	 * @param rightSubTree
+	 */
+	private void assembleNewTree(Node<Key, Val> leftSubTree,
+			Node<Key, Val> rightSubTree) {
+
+		// Suche das letzte linke Element im rechten Teilbaum
+		if (rightSubTree.getLeft() != null) {
+			assembleNewTree(leftSubTree, rightSubTree.getLeft());
+		}
+
+		// Füge den linken Teilbaum an den am weitesten links stehenden Knoten
+		// im rechten
+		// Teilbaum an
+		rightSubTree.setLeft(leftSubTree);
+
+		// Neuer Baum
+		this.root = rightSubTree;
+	}
 
 	@Override
 	public void update(Val key, Val value) {
