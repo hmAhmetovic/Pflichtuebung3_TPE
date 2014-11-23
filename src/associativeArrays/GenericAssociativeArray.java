@@ -402,8 +402,7 @@ public class GenericAssociativeArray<Key, Val> implements
 		}
 
 		// Füge den linken Teilbaum an den am weitesten links stehenden Knoten
-		// im rechten
-		// Teilbaum an
+		// im rechten Teilbaum an
 		rightSubTree.setLeft(leftSubTree);
 
 		// Neuer Baum
@@ -411,21 +410,50 @@ public class GenericAssociativeArray<Key, Val> implements
 	}
 
 	@Override
-	public void update(Val key, Val value) {
-		// TODO Auto-generated method stub
-
+	public void update(Key key, Val value) {
+		if(containsKey(key) == true)
+			updateRek(this.root, key, value);
 	}
 
+	private void updateRek(Node<Key,Val> actualNode, Key key, Val value){
+		
+		if(actualNode.getKey()==key){
+			actualNode.setValue(value);
+		} else if(actualNode.getKey().hashCode() < key.hashCode()){
+			updateRek(actualNode.getRight(), key, value);
+		} else {
+			updateRek(actualNode.getLeft(), key, value);
+		}
+	}
+	
 	@Override
 	public void forEach() {
 		// TODO Auto-generated method stub
 
 	}
+	
 
 	@Override
 	public void putAll(associativeArrays.AssociativeArray.Node<Key, Val> tree) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void extractAll(associativeArrays.AssociativeArray.Node<Key, Val> tree) {
+		if(this.root != null){
+			extractAllRek(this.root, tree);
+		}	
+	}
+	
+	private void extractAllRek(Node<Key,Val> extractThis, Node<Key, Val> tree){
+		if(extractThis == null){
+			
+		}else{
+			putRek(tree, extractThis);
+			remove(extractThis.getKey());
+			extractAllRek(tree, extractThis);
+		}
 	}
 
 }

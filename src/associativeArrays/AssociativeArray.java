@@ -19,64 +19,70 @@ public interface AssociativeArray<Key,T> {
 	public void clear();
 	
 	/**
-	 * containsValue(T value) prüft ob ein übergebener Wert im Array vorhanden ist
+	 * containsValue(T value) prï¿½ft ob ein ï¿½bergebener Wert im Array vorhanden ist
 	 * @param value
 	 * @return boolean
 	 */
 	public boolean containsValue(T value);
 	
 	/**
-	 * containsKey(T key) prüft ob ein übergebener Schlüssel im Array vorhanden ist
+	 * containsKey(T key) prï¿½ft ob ein ï¿½bergebener Schlï¿½ssel im Array vorhanden ist
 	 * @param key
 	 * @return boolean
 	 */
 	public boolean containsKey(Key key);
 	
 	/**
-	 * get(Key key) gibt den Wert an der Stelle des übergebenen Schlüssels zurück
+	 * get(Key key) gibt den Wert an der Stelle des ï¿½bergebenen Schlï¿½ssels zurï¿½ck
 	 * @param key
 	 * @return boolean
 	 */
 	public T get(Key key);
 	
 	/**
-	 * isEmpty() prüft ob das Array leer ist
+	 * isEmpty() prï¿½ft ob das Array leer ist
 	 * @return boolean
 	 */
 	public boolean isEmpty();
 	
 	/**
-	 * put(T key, T value) speichert übergebenen Schlüssel und Wert im Array
+	 * put(T key, T value) speichert ï¿½bergebenen Schlï¿½ssel und Wert im Array
 	 * @param key
 	 * @param value
 	 */
 	public void put(Key key, T value);
 	
 	/**
-	 * putAll(Node<Key,Val) fügt alle Schlüssel-Wert Paare zum assiozativen Array hinzu
+	 * putAll(Node<Key,Val) fï¿½gt alle Schlï¿½ssel-Wert Paare zum assiozativen Array hinzu
 	 * @param pairs
 	 */
 	public void putAll(Node<Key, T> tree);
 	
 	/**
-	 * remove(T key) entfert das Schlüssel-Wert Paar des übergebenen Schlüssels und gibt den Wert zurück
+	 * remove(T key) entfert das Schlï¿½ssel-Wert Paar des ï¿½bergebenen Schlï¿½ssels und gibt den Wert zurï¿½ck
 	 * @param key
 	 * @return T
 	 */
 	public T remove(Key key);
 	
 	/**
-	 * size() gibt die Anzahl der Schlüssel-Wert Paare in einem assiozativem Array zurück
+	 * size() gibt die Anzahl der Schlï¿½ssel-Wert Paare in einem assiozativem Array zurï¿½ck
 	 * @return int
 	 */
 	public int size();
 	
 	/**
-	 * update(T key, T value) ändert den Wert an der Stelle des übergebenen Schlüssels mit dem übergebenen Wert
+	 * update() ï¿½ndert den Wert an der Stelle des ï¿½bergebenen Schlï¿½ssels mit dem ï¿½bergebenen Wert
 	 * @param key
 	 * @param value
 	 */
-	public void update(T key, T value);
+	public void update(Key key, T value);
+	
+	/**
+	 * extractAll() fÃ¼gt alle aktuellen SchlÃ¼ssel-Wert-Paare zum Ã¼bergebenen assoziativen Array hinzu
+	 * @param tree
+	 */
+	public void extractAll(Node<Key,T> tree);
 	
 	//BICONSUMER????
 	public void forEach();
