@@ -335,17 +335,25 @@ public class GenericAssociativeArray<Key, Val> implements
 	private void removeNodeRek(Node<Key, Val> actualNode, Key key) {
 
 		if (actualNode.getKey() == key) {
-			Node<Key, Val> setRight = actualNode.getRight();
-
+			
+			
+			if(actualNode.getKey() == actualNode.getParent().getLeft().getKey()){
+				Node<Key, Val> setRight = actualNode.getRight();
 			// Löschen des Knoten durch Verbinden des Elternknotens mit dem
 			// Kindknoten des gelöschten Knoten
 			actualNode.getParent().setLeft(actualNode.getLeft());
 			actualNode.getParent().getLeft().setRight(setRight);
-
+			} else {
+			// Kindknoten des gelöschten Knoten
+				Node<Key, Val> setLeft = actualNode.getLeft();
+			actualNode.getParent().setRight(actualNode.getRight());
+			actualNode.getParent().getRight().setLeft(setLeft);
+			}
+			
+			
 		} else {
 			// Key ist größer als key vom aktuellen Knoten gehe rechts
 			if (actualNode.getKey().hashCode() < key.hashCode()) {
-				actualNode.getRight().setParent(actualNode);
 				removeNodeRek(actualNode.getRight(), key);
 				// Key ist kleiner als key vom aktuellen Knoten gehe links
 			} else {
@@ -451,7 +459,6 @@ public class GenericAssociativeArray<Key, Val> implements
 			
 		}else{
 			putRek(tree, extractThis);
-			remove(extractThis.getKey());
 			extractAllRek(tree, extractThis);
 		}
 	}
