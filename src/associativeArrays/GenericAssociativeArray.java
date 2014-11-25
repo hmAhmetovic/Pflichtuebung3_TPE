@@ -419,14 +419,20 @@ public class GenericAssociativeArray<Key, Val> implements
 
 	@Override
 	public void update(Key key, Val value) {
+		// Wenn Key vorhanden ist soll Update ausgeführt werden
 		if(containsKey(key) == true)
 			updateRek(this.root, key, value);
 	}
 
 	private void updateRek(Node<Key,Val> actualNode, Key key, Val value){
 		
+		// Wenn Knoten gefunden, update value
 		if(actualNode.getKey()==key){
 			actualNode.setValue(value);
+			
+		/*
+		 * sucht im linken oder rechten Teilbaum nach dem gesuchten Knoten
+		 */
 		} else if(actualNode.getKey().hashCode() < key.hashCode()){
 			updateRek(actualNode.getRight(), key, value);
 		} else {
@@ -453,6 +459,7 @@ public class GenericAssociativeArray<Key, Val> implements
 	@Override
 	public void extractAll(Node<Key, Val> tree) {
 		if(this.root != null){
+			// extractAll nur andersrum
 			extractAllRek(this.root, tree);
 		}
 		
@@ -463,10 +470,13 @@ public class GenericAssociativeArray<Key, Val> implements
 			
 		}else{
 			
+			// Zwischenspeicher für den Aktuellen Knoten der übergeben werden soll
 			Node<Key, Val> temp = new Node<Key,Val>(extractThis.getKey(),extractThis.getValue());
 			
+			// fügen Knoten in den anderen Baum ein
 			putRek(temp, tree);
-	
+			
+			// geht Rekursiv den ganzen Baum durch
 			extractAllRek(extractThis.getLeft(), tree);
 			extractAllRek(extractThis.getRight(), tree);
 		}
