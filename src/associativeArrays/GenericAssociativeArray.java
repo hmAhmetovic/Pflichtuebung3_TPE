@@ -15,15 +15,15 @@ public class GenericAssociativeArray<Key, Val> implements
 	public static class Node<Key, Val> implements Comparable {
 
 		// Schlüssel
-		private Key key;
+		protected Key key;
 		// Wert
-		private Val value;
+		protected Val value;
 		// linkes Kind
-		private Node<Key, Val> left;
+		protected Node<Key, Val> left;
 		// rechtes Kind
-		private Node<Key, Val> right;
+		protected Node<Key, Val> right;
 		// Elternknoten
-		private Node<Key, Val> parent;
+		protected Node<Key, Val> parent;
 
 		// Konstruktor
 		public Node(Key key, Val value) {
@@ -37,43 +37,43 @@ public class GenericAssociativeArray<Key, Val> implements
 		/*
 		 * Methoden
 		 */
-		private Val getValue() {
+		protected Val getValue() {
 			return value;
 		}
 
-		private void setValue(Val value) {
+		protected void setValue(Val value) {
 			this.value = value;
 		}
 
-		private Key getKey() {
+		protected Key getKey() {
 			return key;
 		}
 
-		private void setKey(Key key) {
+		protected void setKey(Key key) {
 			this.key = key;
 		}
 
-		private Node<Key, Val> getLeft() {
+		protected Node<Key, Val> getLeft() {
 			return left;
 		}
 
-		private void setLeft(Node<Key, Val> left) {
+		protected void setLeft(Node<Key, Val> left) {
 			this.left = left;
 		}
 
-		private Node<Key, Val> getRight() {
+		protected Node<Key, Val> getRight() {
 			return right;
 		}
 
-		private void setRight(Node<Key, Val> right) {
+		protected void setRight(Node<Key, Val> right) {
 			this.right = right;
 		}
 
-		private Node<Key, Val> getParent() {
+		protected Node<Key, Val> getParent() {
 			return parent;
 		}
 
-		private void setParent(Node<Key, Val> parent) {
+		protected void setParent(Node<Key, Val> parent) {
 			this.parent = parent;
 		}
 
@@ -123,7 +123,7 @@ public class GenericAssociativeArray<Key, Val> implements
 	}
 
 	// Wurzel des Baums
-	private Node<Key, Val> root;
+	protected Node<Key, Val> root;
 
 	// Konstruktor
 	public GenericAssociativeArray(Key key, Val value) {
