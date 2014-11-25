@@ -1,6 +1,8 @@
 package associativeArrays;
 
-import associativeArrays.AssociativeArray.Node;
+import associativeArrays.GenericAssociativeArray.Node;
+
+
 
 
 /**
@@ -9,9 +11,9 @@ import associativeArrays.AssociativeArray.Node;
  *
  * @param <T>
  */
-public interface AssociativeArray<Key,T> {
+public interface AssociativeArray<K,T> {
 
-	class Node<Key,T>{};
+	
 	
 	/**
 	 * clear() leert das assoziative Array
@@ -30,14 +32,14 @@ public interface AssociativeArray<Key,T> {
 	 * @param key
 	 * @return boolean
 	 */
-	public boolean containsKey(Key key);
+	public boolean containsKey(K key);
 	
 	/**
 	 * get(Key key) gibt den Wert an der Stelle des �bergebenen Schl�ssels zur�ck
 	 * @param key
 	 * @return boolean
 	 */
-	public T get(Key key);
+	public T get(K key);
 	
 	/**
 	 * isEmpty() pr�ft ob das Array leer ist
@@ -50,20 +52,20 @@ public interface AssociativeArray<Key,T> {
 	 * @param key
 	 * @param value
 	 */
-	public void put(Key key, T value);
+	public void put(K key, T value);
 	
 	/**
 	 * putAll(Node<Key,Val) f�gt alle Schl�ssel-Wert Paare zum assiozativen Array hinzu
 	 * @param pairs
 	 */
-	public void putAll(Node<Key, T> tree);
+	public void putAll(Node<K, T> tree);
 	
 	/**
 	 * remove(T key) entfert das Schl�ssel-Wert Paar des �bergebenen Schl�ssels und gibt den Wert zur�ck
 	 * @param key
 	 * @return T
 	 */
-	public T remove(Key key);
+	public T remove(K key);
 	
 	/**
 	 * size() gibt die Anzahl der Schl�ssel-Wert Paare in einem assiozativem Array zur�ck
@@ -76,13 +78,13 @@ public interface AssociativeArray<Key,T> {
 	 * @param key
 	 * @param value
 	 */
-	public void update(Key key, T value);
+	public void update(K key, T value);
 	
 	/**
 	 * extractAll() fügt alle aktuellen Schlüssel-Wert-Paare zum übergebenen assoziativen Array hinzu
 	 * @param tree
 	 */
-	public void extractAll(Node<Key,T> tree);
+	public void extractAll(Node<K,T> tree);
 	
 	//BICONSUMER????
 	public void forEach();

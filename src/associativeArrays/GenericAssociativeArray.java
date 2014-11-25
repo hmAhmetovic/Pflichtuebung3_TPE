@@ -12,7 +12,7 @@ public class GenericAssociativeArray<Key, Val> implements
 	 * @param <Key>
 	 * @param <Val>
 	 */
-	private class Node<Key, Val> implements Comparable {
+	public static class Node<Key, Val> implements Comparable {
 
 		// Schlüssel
 		private Key key;
@@ -111,13 +111,13 @@ public class GenericAssociativeArray<Key, Val> implements
 			return true;
 		}
 
-		private GenericAssociativeArray getOuterType() { // ???
+		private GenericAssociativeArray<Key,Val> getOuterType() { // ???
 			return GenericAssociativeArray.this;
 		}
 
 		@Override
 		public int compareTo(Object other) {
-			return this.key.hashCode() - ((Node) other).key.hashCode();
+			return this.getKey().hashCode() - ((Node) other).getKey().hashCode();
 		}
 
 	}
@@ -159,8 +159,8 @@ public class GenericAssociativeArray<Key, Val> implements
 		}
 
 		// sucht den gesamten Baum rekursiv ab (preorder)
-		return containsValueRek(value, actualNode.left)
-				|| containsValueRek(value, actualNode.right);
+		return containsValueRek(value, actualNode.getLeft())
+				|| containsValueRek(value, actualNode.getRight());
 
 	}
 
@@ -177,7 +177,7 @@ public class GenericAssociativeArray<Key, Val> implements
 		}
 
 		// summiert alle Knoten im Baum mit Rekursion
-		return 1 + sizeRek(actualNode.left) + sizeRek(actualNode.right);
+		return 1 + sizeRek(actualNode.getLeft()) + sizeRek(actualNode.getRight());
 
 	}
 
@@ -195,15 +195,15 @@ public class GenericAssociativeArray<Key, Val> implements
 		}
 
 		// Wenn aktueller Knoten gesuchten Key enthält return true
-		if (actualNode.key == key) {
+		if (actualNode.getKey()== key) {
 			return true;
 		}
 
 		// Wenn gesuchter Key größer ist als Key vom aktuellen Knoten
-		if (actualNode.key.hashCode() < key.hashCode()) {
+		if (actualNode.getKey().hashCode() < key.hashCode()) {
 
 			// Wenn rechter Ast leer ist
-			if (actualNode.right == null) {
+			if (actualNode.getRight() == null) {
 				return false;
 				// suche weiter im rechten Ast
 			} else {
@@ -213,7 +213,7 @@ public class GenericAssociativeArray<Key, Val> implements
 			// Wenn gesuchter Key kleiner ist als Key vom aktuellen Knoten
 
 			// Wenn linker Ast leer ist
-		} else if (actualNode.left == null) {
+		} else if (actualNode.getLeft() == null) {
 			return false;
 			// suche weiter im linken Ast
 		} else {
@@ -442,25 +442,36 @@ public class GenericAssociativeArray<Key, Val> implements
 	
 
 	@Override
-	public void putAll(associativeArrays.AssociativeArray.Node<Key, Val> tree) {
+	public void putAll(Node<Key, Val> tree) {
 		// TODO Auto-generated method stub
-
+		
+		if(tree != null){
+			extractAllRek(tree, this.root);
+		}
 	}
 
 	@Override
-	public void extractAll(associativeArrays.AssociativeArray.Node<Key, Val> tree) {
+	public void extractAll(Node<Key, Val> tree) {
 		if(this.root != null){
 			extractAllRek(this.root, tree);
-		}	
+		}
+		
 	}
 	
 	private void extractAllRek(Node<Key,Val> extractThis, Node<Key, Val> tree){
 		if(extractThis == null){
 			
 		}else{
-			putRek(tree, extractThis);
-			extractAllRek(tree, extractThis);
+			
+			Node<Key, Val> temp = new Node<Key,Val>(extractThis.getKey(),extractThis.getValue());
+			
+			putRek(temp, tree);
+	
+			extractAllRek(extractThis.getLeft(), tree);
+			extractAllRek(extractThis.getRight(), tree);
 		}
+		
+		this.root = null;
 	}
 
 }
