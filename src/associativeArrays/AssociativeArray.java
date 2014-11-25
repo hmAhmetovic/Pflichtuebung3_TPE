@@ -1,6 +1,8 @@
 package associativeArrays;
 
 import associativeArrays.GenericAssociativeArray.Node;
+//Wird für den BiConsumer und BiFunction benötigt
+import java.util.function.*;
 
 
 
@@ -21,60 +23,60 @@ public interface AssociativeArray<K,T> {
 	public void clear();
 	
 	/**
-	 * containsValue(T value) pr�ft ob ein �bergebener Wert im Array vorhanden ist
+	 * containsValue(T value) prüft ob ein übergebener Wert im Array vorhanden ist
 	 * @param value
 	 * @return boolean
 	 */
 	public boolean containsValue(T value);
 	
 	/**
-	 * containsKey(T key) pr�ft ob ein �bergebener Schl�ssel im Array vorhanden ist
+	 * containsKey(T key) prüft ob ein übergebener Schlüssel im Array vorhanden ist
 	 * @param key
 	 * @return boolean
 	 */
 	public boolean containsKey(K key);
 	
 	/**
-	 * get(Key key) gibt den Wert an der Stelle des �bergebenen Schl�ssels zur�ck
+	 * get(Key key) gibt den Wert an der Stelle des übergebenen Schlüssels zurück
 	 * @param key
 	 * @return boolean
 	 */
 	public T get(K key);
 	
 	/**
-	 * isEmpty() pr�ft ob das Array leer ist
+	 * isEmpty() prüft ob das Array leer ist
 	 * @return boolean
 	 */
 	public boolean isEmpty();
 	
 	/**
-	 * put(T key, T value) speichert �bergebenen Schl�ssel und Wert im Array
+	 * put(T key, T value) speichert übergebenen Schlüssel und Wert im Array
 	 * @param key
 	 * @param value
 	 */
 	public void put(K key, T value);
 	
 	/**
-	 * putAll(Node<Key,Val) f�gt alle Schl�ssel-Wert Paare zum assiozativen Array hinzu
+	 * putAll(Node<Key,Val) fügt alle Schlüssel-Wert Paare zum assiozativen Array hinzu
 	 * @param pairs
 	 */
 	public void putAll(GenericAssociativeArray<K, T> tree);
 	
 	/**
-	 * remove(T key) entfert das Schl�ssel-Wert Paar des �bergebenen Schl�ssels und gibt den Wert zur�ck
+	 * remove(T key) entfert das Schlüssel-Wert Paar des übergebenen Schlüssels und gibt den Wert zurück
 	 * @param key
 	 * @return T
 	 */
 	public T remove(K key);
 	
 	/**
-	 * size() gibt die Anzahl der Schl�ssel-Wert Paare in einem assiozativem Array zur�ck
+	 * size() gibt die Anzahl der Schlüssel-Wert Paare in einem assiozativem Array zurück
 	 * @return int
 	 */
 	public int size();
 	
 	/**
-	 * update() �ndert den Wert an der Stelle des �bergebenen Schl�ssels mit dem �bergebenen Wert
+	 * update() ändert den Wert an der Stelle des übergebenen Schlüssels mit dem übergebenen Wert
 	 * @param key
 	 * @param value
 	 */
@@ -86,6 +88,18 @@ public interface AssociativeArray<K,T> {
 	 */
 	public void extractAll(GenericAssociativeArray<K,T> tree);
 	
-	//BICONSUMER????
-	public void forEach();
+	/**
+	 * forEach(BiConsumer<?, ?> biConsumer) Wendet einen übergebenen BiConsumer 
+	 * auf alle Schlüssel-Wert-Paare an
+	 * @param biConsumer
+	 */
+	public void forEach(BiConsumer<?, ?> biConsumer);
+	   /**
+     * GenericAssociativeArray map(BiFunction<?, ?, ?> biFunction) Wendet eine übergebene BiFunction 
+     * auf alle Schlüssel-Wert-Paare an und erzeugt ein neues assoziatives Array mit den veränderten  
+     * Schlüssel-Wert-Paaren
+     * @param biFunction
+     * @return
+     */
+    public GenericAssociativeArray<?,?> map(BiFunction<?, ?, ?> biFunction);//Vom typ <?,?> oder <k,T> 
 }

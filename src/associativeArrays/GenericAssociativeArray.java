@@ -1,4 +1,6 @@
 package associativeArrays;
+//Wird für den BiConsumer und BiFunction benötigt
+import java.util.function.*;
 
 public class GenericAssociativeArray<Key, Val> implements
 		AssociativeArray<Key, Val> {
@@ -440,13 +442,30 @@ public class GenericAssociativeArray<Key, Val> implements
 		}
 	}
 	
-	@Override
-	public void forEach() {
-		// TODO Auto-generated method stub
-
-	}
-	
-
+    @Override
+    public void forEach(BiConsumer<?, ?> biConsumer){
+        Node<Key, Val> actualNode = this.root;
+        //Leerer baum?
+        if(this.root != null ){
+            forEach(this.root,biConsumer);
+        }//else{
+            //biConsumer.accept(null, null); Was passiert bei einem Leeren Baum
+        //}
+    }
+    //Methode zur Rekursiven implemntierung von forEach()
+    private void forEach(Node<Key,Val> actualNode,BiConsumer biconsumer){
+        //Linker teilbaum zuerst durchlaufen  
+        if(actualNode.getLeft() != null){
+            forEach(actualNode.getLeft(),biconsumer);
+        }
+        //Übergebenen BiConsumer anwenden
+        biconsumer.accept(actualNode.getValue(), actualNode.getKey());
+        //Rechter Teilbaum durchlaufen  
+        if(actualNode.getRight() != null){
+            forEach(actualNode.getRight(),biconsumer);
+        }
+        
+    }
 	@Override
 	public void putAll(GenericAssociativeArray <Key, Val> tree) {
 		// TODO Auto-generated method stub
@@ -483,5 +502,24 @@ public class GenericAssociativeArray<Key, Val> implements
 		
 		this.root = null;
 	}
-
+	   @Override
+	    public GenericAssociativeArray map(BiFunction biFunction) {
+	        //
+	        Node<Key, Val> actualNode = this.root;
+	        //neues Array
+	        GenericAssociativeArray array = null;
+	        
+	        
+	        
+	        
+	        
+	        
+	        return array;
+	    }
+	    
+	    private void map(Node<Key,Val> actualNode,BiFunction biFunction,GenericAssociativeArray array){
+	          
+	        
+	        
+	    }
 }
