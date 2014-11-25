@@ -8,11 +8,16 @@ package associativeArrays;
  * @author TPE Gruppe 14
  *
  */
-public class IntegerAssociativeArray extends GenericAssociativeArray {
+public class IntegerAssociativeArray<Key> extends GenericAssociativeArray<Key, Integer> {
 
-	public IntegerAssociativeArray(Object key, int value) {
+	
+	public IntegerAssociativeArray(Key key, Integer value) {
 		super(key, value);
-
+		// TODO Auto-generated constructor stub
 	}
+
+
+
+
 
 }

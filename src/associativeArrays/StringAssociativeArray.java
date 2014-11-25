@@ -8,11 +8,15 @@ package associativeArrays;
  * @author TPE Gruppe 14
  *
  */
-public class StringAssociativeArray extends GenericAssociativeArray {
+public class StringAssociativeArray<Val> extends GenericAssociativeArray<String, Val> {
 
-	public StringAssociativeArray(String key, Object value) {
+	public StringAssociativeArray(String key, Val value) {
 		super(key, value);
-
+		// TODO Auto-generated constructor stub
 	}
+
+	
+
+	
 
 }

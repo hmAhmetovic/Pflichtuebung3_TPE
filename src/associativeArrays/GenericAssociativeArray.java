@@ -448,19 +448,19 @@ public class GenericAssociativeArray<Key, Val> implements
 	
 
 	@Override
-	public void putAll(Node<Key, Val> tree) {
+	public void putAll(GenericAssociativeArray <Key, Val> tree) {
 		// TODO Auto-generated method stub
 		
 		if(tree != null){
-			extractAllRek(tree, this.root);
+			extractAllRek(tree.root, this.root);
 		}
 	}
 
 	@Override
-	public void extractAll(Node<Key, Val> tree) {
+	public void extractAll(GenericAssociativeArray<Key, Val> tree) {
 		if(this.root != null){
 			// extractAll nur andersrum
-			extractAllRek(this.root, tree);
+			extractAllRek(this.root, tree.root);
 		}
 		
 	}

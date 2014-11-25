@@ -58,7 +58,7 @@ public interface AssociativeArray<K,T> {
 	 * putAll(Node<Key,Val) f�gt alle Schl�ssel-Wert Paare zum assiozativen Array hinzu
 	 * @param pairs
 	 */
-	public void putAll(Node<K, T> tree);
+	public void putAll(GenericAssociativeArray<K, T> tree);
 	
 	/**
 	 * remove(T key) entfert das Schl�ssel-Wert Paar des �bergebenen Schl�ssels und gibt den Wert zur�ck
@@ -84,7 +84,7 @@ public interface AssociativeArray<K,T> {
 	 * extractAll() fügt alle aktuellen Schlüssel-Wert-Paare zum übergebenen assoziativen Array hinzu
 	 * @param tree
 	 */
-	public void extractAll(Node<K,T> tree);
+	public void extractAll(GenericAssociativeArray<K,T> tree);
 	
 	//BICONSUMER????
 	public void forEach();
