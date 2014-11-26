@@ -14,7 +14,7 @@ public class GenericAssociativeArray<Key, Val> implements
 	 * @param <Key>
 	 * @param <Val>
 	 */
-	public static class Node<Key, Val> implements Comparable {
+	public class Node<Key, Val> implements Comparable {
 
 		// Schlüssel
 		protected Key key;
@@ -113,7 +113,7 @@ public class GenericAssociativeArray<Key, Val> implements
 			return true;
 		}
 
-		private GenericAssociativeArray<Key,Val> getOuterType() { // ???
+		private GenericAssociativeArray getOuterType() { // ???
 			return GenericAssociativeArray.this;
 		}
 
@@ -129,21 +129,20 @@ public class GenericAssociativeArray<Key, Val> implements
 
 	// Konstruktor
 	public GenericAssociativeArray(Key key, Val value) {
-		this.root = new Node<Key, Val>(key, value);
+		this.setRoot(new Node<Key, Val>(key, value));
 	}
 
 	@Override
 	public void clear() {
 		// Wurzel null setzen damit ist gesamter Baum leer
-		this.root = null;
+		this.setRoot(null);
 
 	}
 
 	@Override
 	public boolean containsValue(Val value) {
-		Node<Key, Val> actualNode = this.root;
-
-		return containsValueRek(value, actualNode);
+		
+	    return containsValueRek(value, this.getRoot());
 
 	}
 
@@ -153,22 +152,20 @@ public class GenericAssociativeArray<Key, Val> implements
 		// Es gibt keine weiteren Kinderknoten
 		if (actualNode == null) {
 			return false;
-		}
-
 		// Wenn aktueller Knoten den gesuchten Wert enthält return true
-		if (actualNode.value == value) {
+		}else if (actualNode.getValue() == value) {
 			return true;
-		}
+		}else{
 
 		// sucht den gesamten Baum rekursiv ab (preorder)
 		return containsValueRek(value, actualNode.getLeft())
 				|| containsValueRek(value, actualNode.getRight());
-
+		}
 	}
 
 	@Override
 	public int size() {
-		return sizeRek(this.root);
+		return sizeRek(this.getRoot());
 	}
 
 	private int sizeRek(Node<Key, Val> actualNode) {
@@ -185,7 +182,7 @@ public class GenericAssociativeArray<Key, Val> implements
 
 	@Override
 	public boolean containsKey(Key key) {
-		return containsKey(key, this.root);
+		return containsKey(key, this.getRoot());
 
 	}
 
@@ -227,7 +224,7 @@ public class GenericAssociativeArray<Key, Val> implements
 	@Override
 	public Val get(Key key) {
 
-		return getRek(key, this.root);
+		return getRek(key, this.getRoot());
 	}
 
 	private Val getRek(Key key, Node<Key, Val> actualNode) {
@@ -267,7 +264,7 @@ public class GenericAssociativeArray<Key, Val> implements
 	@Override
 	public boolean isEmpty() {
 		// Gibt es eine Wurzel ist der Baum nicht leer
-		if (root != null) {
+		if (getRoot() == null) {
 			return true;
 			// ist die Wurzel null ist der Baum leer
 		} else {
@@ -280,7 +277,7 @@ public class GenericAssociativeArray<Key, Val> implements
 
 		// erstelle Schlüssel-Wert-Paar mit übergebenem Schlüssel und Wert
 		Node<Key, Val> putNode = new Node<Key, Val>(key, value);
-		putRek(putNode, this.root);
+		putRek(putNode, this.getRoot());
 	}
 
 	private void putRek(Node<Key, Val> putNode, Node<Key, Val> actualNode) {
@@ -319,12 +316,12 @@ public class GenericAssociativeArray<Key, Val> implements
 
 		Val value;
 		// Wenn Wert im Baum vorhanden ist
-		if (containsKey(this.root.getKey()) == true) {
+		if (containsKey(this.getRoot().getKey()) == true) {
 			value = get(key);
-			if (this.root.getKey() == key) {
-				removeRoot(this.root);
+			if (this.getRoot().getKey() == key) {
+				removeRoot(this.getRoot());
 			} else {
-				removeNodeRek(this.root, key);
+				removeNodeRek(this.getRoot(), key);
 			}
 			// Wert ist nicht vorhanden , null
 		} else {
@@ -381,17 +378,17 @@ public class GenericAssociativeArray<Key, Val> implements
 			// Falls Teilbäume zusammengefügt werden müssen
 		} else {
 			// Wenn Teilbäume nicht leer füge Teilbäume zusammen
-			if (this.root.getRight() != null && this.root.getLeft() != null) {
-				assembleNewTree(this.root.getLeft(), this.root.getRight());
+			if (this.getRoot().getRight() != null && this.getRoot().getLeft() != null) {
+				assembleNewTree(this.getRoot().getLeft(), this.getRoot().getRight());
 
 				// Rechter Teilbaum ist leer, neuer Baum ist linker Teilbaum
-			} else if (this.root.getRight() == null
-					&& this.root.getLeft() != null) {
-				this.root = this.root.getLeft();
+			} else if (this.getRoot().getRight() == null
+					&& this.getRoot().getLeft() != null) {
+				this.setRoot(this.getRoot().getLeft());
 
 				// Linker Teilbaum ist leer, neuer Baum ist rechter Teilbaum
 			} else {
-				this.root = this.root.getRight();
+				this.setRoot(this.getRoot().getRight());
 			}
 		}
 	}
@@ -416,14 +413,14 @@ public class GenericAssociativeArray<Key, Val> implements
 		rightSubTree.setLeft(leftSubTree);
 
 		// Neuer Baum
-		this.root = rightSubTree;
+		this.setRoot(rightSubTree);
 	}
 
 	@Override
 	public void update(Key key, Val value) {
 		// Wenn Key vorhanden ist soll Update ausgeführt werden
 		if(containsKey(key) == true)
-			updateRek(this.root, key, value);
+			updateRek(this.getRoot(), key, value);
 	}
 
 	private void updateRek(Node<Key,Val> actualNode, Key key, Val value){
@@ -443,11 +440,11 @@ public class GenericAssociativeArray<Key, Val> implements
 	}
 	
     @Override
-    public void forEach(BiConsumer<?, ?> biConsumer){
-        Node<Key, Val> actualNode = this.root;
+    public void forEach(BiConsumer <?,?> biConsumer){
+        Node<Key, Val> actualNode = this.getRoot();
         //Leerer baum?
-        if(this.root != null ){
-            forEach(this.root,biConsumer);
+        if(this.getRoot() != null ){
+            forEach(this.getRoot(),biConsumer);
         }//else{
             //biConsumer.accept(null, null); Was passiert bei einem Leeren Baum
         //}
@@ -459,7 +456,7 @@ public class GenericAssociativeArray<Key, Val> implements
             forEach(actualNode.getLeft(),biconsumer);
         }
         //Übergebenen BiConsumer anwenden
-        biconsumer.accept(actualNode.getValue(), actualNode.getKey());
+        biconsumer.accept(actualNode.getKey(), actualNode.getValue());
         //Rechter Teilbaum durchlaufen  
         if(actualNode.getRight() != null){
             forEach(actualNode.getRight(),biconsumer);
@@ -471,15 +468,15 @@ public class GenericAssociativeArray<Key, Val> implements
 		// TODO Auto-generated method stub
 		
 		if(tree != null){
-			extractAllRek(tree.root, this.root);
+			extractAllRek(tree.getRoot(), this.getRoot());
 		}
 	}
 
 	@Override
 	public void extractAll(GenericAssociativeArray<Key, Val> tree) {
-		if(this.root != null){
+		if(this.getRoot() != null){
 			// extractAll nur andersrum
-			extractAllRek(this.root, tree.root);
+			extractAllRek(this.getRoot(), tree.getRoot());
 		}
 		
 	}
@@ -500,26 +497,46 @@ public class GenericAssociativeArray<Key, Val> implements
 			extractAllRek(extractThis.getRight(), tree);
 		}
 		
-		this.root = null;
+		this.setRoot(null);
 	}
 	   @Override
 	    public GenericAssociativeArray map(BiFunction biFunction) {
 	        //
-	        Node<Key, Val> actualNode = this.root;
+	        Node<Key, Val> actualNode = this.getRoot();
+	        
 	        //neues Array
 	        GenericAssociativeArray array = null;
-	        
-	        
-	        
 	        
 	        
 	        
 	        return array;
 	    }
 	    
-	    private void map(Node<Key,Val> actualNode,BiFunction biFunction,GenericAssociativeArray array){
-	          
+	    private GenericAssociativeArray map(Node<Key,Val> actualNode,BiFunction biFunction,GenericAssociativeArray array){
+	        
+
+	        // Es gibt keine weiteren Kinderknoten
+	        if (actualNode == null) {
+	            return array;
+	        }
+
+	        // summiert alle Knoten im Baum mit Rekursion
+	        sizeRek(actualNode.getLeft()); 
+	        
+	        biFunction.apply(actualNode.getKey(), actualNode.getValue());
+	        
+	        sizeRek(actualNode.getRight());
+
 	        
 	        
+	        return array;
 	    }
+
+        public Node<Key, Val> getRoot() {
+            return root;
+        }
+
+        public void setRoot(Node<Key, Val> root) {
+            this.root = root;
+        }
 }

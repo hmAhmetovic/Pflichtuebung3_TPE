@@ -16,9 +16,9 @@ public class Dictionary extends GenericAssociativeArray<String, String> {
 	public String[] keys() {
 
 		// String Array mit Größe von Anzahl der Knoten im Baum
-		String keyArray[] = new String[size() - 1];
+		String keyArray[] = new String[size()];
 
-		keysRek(keyArray, this.root, 0);
+		keysRek(keyArray, this.getRoot(), 0);
 
 		return keyArray;
 	}
@@ -34,6 +34,8 @@ public class Dictionary extends GenericAssociativeArray<String, String> {
 			/*
 			 * Rekursive Preorder Aufrufe
 			 */
+			
+			
 			keysRek(keyArray, node.getLeft(), count + 1);
 			keysRek(keyArray, node.getRight(), count + 1);
 		}
@@ -48,9 +50,9 @@ public class Dictionary extends GenericAssociativeArray<String, String> {
 	public String[] values() {
 
 		// String Array mit Größe von Anzahl der Knoten im Baum
-		String valueArray[] = new String[size() - 1];
+		String valueArray[] = new String[size() ];
 
-		valuesRek(valueArray, this.root, 0);
+		valuesRek(valueArray, this.getRoot(), 0);
 
 		return valueArray;
 	}

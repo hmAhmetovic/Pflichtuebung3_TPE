@@ -45,7 +45,7 @@ public interface AssociativeArray<K,T> {
 	
 	/**
 	 * isEmpty() prüft ob das Array leer ist
-	 * @return boolean
+	 * @return Val
 	 */
 	public boolean isEmpty();
 	
@@ -102,4 +102,7 @@ public interface AssociativeArray<K,T> {
      * @return
      */
     public GenericAssociativeArray<?,?> map(BiFunction<?, ?, ?> biFunction);//Vom typ <?,?> oder <k,T> 
+    
+    
+    
 }
